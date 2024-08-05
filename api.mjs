@@ -70,6 +70,7 @@ async function load_comments(pageId, limit = 20) {
         comments = await dbQueryAll`SELECT * FROM comments ORDER BY updated_at DESC LIMIT ${limit}`;
         for (let comment of comments) {
             comment.page = await dbQueryFirst`SELECT * FROM pages WHERE id = ${comment.page_id}`;
+            comment.page.url = process.env.PAGE_ORIGIN + comment.page.pathname;
         }
     }
     return comments;
